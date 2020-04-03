@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {% endblock %}
+
+
+
+{% block body %}
+    <h1>Run a new algorythm</h1>
+    {{ form_start(algForm) }}
+    {{ form_widget(algForm) }}
+    <button type="submit" class="btn btn-primary">Run!</button>
+    {{ form_end(algForm) }}
+
+
+
+
+    <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Wynik:" }}</h1>
+
+
+    {% for wyn in wynikiAlgorytmuUczelnie %}
+
+        {% dump(wyn) %}
+        <h5> Dzien tygodnia:{{ wyn.numer_dnia }} Nazwa zajec: {{ wyn.nazwa_zajec }}</h5>
+    {% endfor %}
+{% endblock %}
