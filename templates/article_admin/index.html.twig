@@ -5,10 +5,22 @@
 
 
 {% block body %}
+    <li><a href="{{path('hello_page') }} ">back</a></li>
     <h1>Launch a new Article! ?</h1>
     {{ form_start(articleForm) }}
     {{ form_widget(articleForm) }}
     <button type="submit" class="btn btn-primary">Create!</button>
     {{ form_end(articleForm) }}
+    <h1>------------------------------------------------</h1>
+    <h1>Launch a new Zajecia! ?</h1>
+    {{ form_start(zajeciaForm) }}
+    {{ form_widget(zajeciaForm) }}
+    <button type="submit" class="btn btn-primary">Create!</button>
+    {{ form_end(zajeciaForm) }}
+
+
+
+
+
 {% endblock %}
 

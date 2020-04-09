@@ -1,1 +1,23 @@
-Witam !
+{% extends 'base.html.twig' %}
+
+
+
+{% block title %}Welcome!{% endblock %}
+
+
+
+{% block body %}
+
+
+    <div>
+
+
+
+
+What would you like to do?
+
+        <li><a href="{{path('algorytm') }} "> Set scheadule .</a></li>
+        <li><a href="{{path('dodanie_do_bazy') }} ">  Add data to the database. </a></li>
+
+    </div>
+{% endblock %}

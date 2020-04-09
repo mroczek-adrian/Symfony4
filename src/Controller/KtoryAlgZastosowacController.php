@@ -27,11 +27,14 @@ class KtoryAlgZastosowacController extends AbstractController
         $wynikiAlgorytmuUczelnie= $this->getDoctrine()->getRepository(WynikAlgUczelnie::class)->findAll();
 
 
+
+
+
+
+
         //tworze formularz
         $form = $this->createForm(KtoryAlgZastosowacType::class);
-
         $form -> handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()){
             // ew uzyc dump
             //  dd($form ->getData());
@@ -45,6 +48,13 @@ class KtoryAlgZastosowacController extends AbstractController
           {
               //akcja
 
+              //proba usuniecia wszystkich danych z
+              $zajecia= $this->getDoctrine()->getRepository(WynikAlgUczelnie::class)->findAll();
+              foreach ($zajecia as $zajecie) {
+                  $em->remove($zajecie);
+              }
+              //usuwam
+              $em->flush();
 
 
 
@@ -102,64 +112,32 @@ class KtoryAlgZastosowacController extends AbstractController
                       }
                   }
               }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              //deklaruje zmienna obiektu ktora bede chcial wewalic do bazy
-
-
-
-
               //musi ustawiac to kilka razy jesli zajcdzie potrzeba np 3 zajecia w 1 dzien
               //przyklad///  $nazwa_algorytmu->setNazwaAlgorytmu($data['nazwa_algorytmu']);
-
-
               foreach($rozwiazania as $rozwiazanie){
                   $wynik_algorytmu_uczelnie = new  WynikAlgUczelnie();
                   $wynik_algorytmu_uczelnie->setNumerDnia($rozwiazanie[0]);
                   $wynik_algorytmu_uczelnie->setNazwaZajec($rozwiazanie[1]);
                   $em->persist($wynik_algorytmu_uczelnie);
-
               }
-
-
-
               //laduje do bazy wynik
               //pomysl jak wladowac kilka rekordow kilka persist
-
-//
-//
-//
               $em->flush();
-
-
               return $this->redirectToRoute('algorytm');
+          }else{
+              //proba usuniecia wszystkich danych z aby nic nie wyswietlilo z wyn alg ucz  po ostatnim dodaniu
+              $zajecia= $this->getDoctrine()->getRepository(WynikAlgUczelnie::class)->findAll();
+              foreach ($zajecia as $zajecie) {
+                  $em->remove($zajecie);
+              }
+              //usuwam
+              $em->flush();
           }
-
-
-
-
-
-
-
 
         }
         return $this->render('ktory_alg_zastosowac/index.html.twig', [
             'algForm' => $form->createView(),
             'wynikiAlgorytmuUczelnie' => $wynikiAlgorytmuUczelnie,
-
-
         ]);
     }
 

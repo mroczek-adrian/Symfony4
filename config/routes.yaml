@@ -3,7 +3,8 @@ algorytm:
     controller: App\Controller\KtoryAlgZastosowacController::index
 hello_page:
   path: /
-  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController:templateAction
-  defaults:
-    template: 'hello_page.html.twig'
+  controller: App\Controller\HelloPageController::index
 
+dodanie_do_bazy:
+  path: /article/admin
+  controller: App\Controller\ArticleAdminContorller::index
