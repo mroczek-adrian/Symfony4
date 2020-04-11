@@ -18,9 +18,19 @@
     <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Wynik:" }}</h1>
 
 
+
+
     {% for wyn in wynikiAlgorytmuUczelnie %}
 
         {% dump(wyn) %}
         <h5> Dzien tygodnia:{{ wyn.numer_dnia }} Nazwa zajec: {{ wyn.nazwa_zajec }}</h5>
     {% endfor %}
+    {% dump(FLAGA) %}
+
+    {% if FLAGA %}
+        <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia negatywna -nie umieszczono   "}}{{ wynikiAlgorytmuUczelnie is not null ? ilosc_niezapisanych }}{{ wynikiAlgorytmuUczelnie is not null ?"   przedmiotow" }} </h4>
+    {% else %}
+        <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia pomyslna-wszystkie przedmoity umieszczone w grafiku"  }}</h4>
+    {% endif %}
+
 {% endblock %}
