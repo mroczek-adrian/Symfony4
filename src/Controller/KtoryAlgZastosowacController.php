@@ -22,7 +22,6 @@ class KtoryAlgZastosowacController extends AbstractController
     /**
      * @Route("/ktory/alg/zastosowac", name="ktory_alg_zastosowac")
      */
-public $flaga1=1;
 
     /**
      * @var Integer $flaga
@@ -63,39 +62,101 @@ public $flaga1=1;
               //usuwam
               $em->flush();
 
-              //pobieram dane z klas
+
+              //SORTOWANIE
+              //po pobraniu chce postortowac rosnaco zajecia i godziny uczelni aby wzrosla efektywnosc alg
+              //tzn kiedy idzie po kolei to dodaje zajecia 1h do blokow 8h w szkole a zostawia ptem blok 1h pusty....
+              //select sort - przez wybor
+
+                //pobieram dane z klas
               $zajecia= $this->getDoctrine()->getRepository(Zajecia::class)->findAll();
+
+              //ilosc elementow w tabeli
+              $n=0;
+              foreach ($zajecia as $zaj){
+                  $n=$n+1;
+              }
+
+              //tworze tablice z danymi nieposortowanymi
+              foreach ($zajecia as $zaj){
+                  $nieposortowane_zajecia[]=array($zaj->getOkres(),$zaj->getNazwa());
+              }
+              // ALGORYTM sortowania zajec przez wybor-selection sort
+                //pamietajmy, ze indeks w tabeli rozpoczyna sie od 0 a konczy na n-1 
+              for($i=0;$i<$n;$i++){//petla glowna
+                  $min=$i;
+                  for($j=$i;$j<$n;$j++){//petla wewnetrzna
+                      if($nieposortowane_zajecia[$j][0]<$nieposortowane_zajecia[$min][0]) $min=$j;//szukanie wartosci min.
+                  }
+                //po wykonaniu petli wewnetrznej nastepuje zamiana elementow:
+                  $tmp=$nieposortowane_zajecia[$i][0];
+                  $tmp1=$nieposortowane_zajecia[$i][1];
+                  $nieposortowane_zajecia[$i][0]=$nieposortowane_zajecia[$min][0];
+                  $nieposortowane_zajecia[$i][1]=$nieposortowane_zajecia[$min][1];
+                  $nieposortowane_zajecia[$min][0]=$tmp;
+                  $nieposortowane_zajecia[$min][1]=$tmp1;
+              }
+
+              //deklaracje do ALGORYTM SORTOWANIA- po godzinach uczelni
               $godziny_pracy_uczelni= $this->getDoctrine()->getRepository(GodzinyPracyUczelni::class)->findAll();
+
+              //ilosc elementow w tabeli
+              $n=0;
+              foreach ($godziny_pracy_uczelni as $god){
+                  $n=$n+1;
+              }
+
+              //tworze tablice z danymi nieposortowanymi
+              foreach ($godziny_pracy_uczelni as $god){
+                  $nieposortowane_godzinypracyucz[]=array($god->getGodziny(),$god->getDzien());
+              }
+              // ALGORYTM sortowania
+              //pamietajmy, ze indeks w tabeli rozpoczyna sie od 0
+              //a konczy na n-1
+              for($i=0;$i<$n;$i++){//petla glowna
+                  $min=$i;
+                  for($j=$i;$j<$n;$j++){//petla wewnetrzna
+                      if($nieposortowane_godzinypracyucz[$j][0]<$nieposortowane_godzinypracyucz[$min][0]) $min=$j;//szukanie wartosci min.
+                  }
+
+                  //po wykonaniu petli wewnetrznej nastepuje zamiana:
+                  $tmp=$nieposortowane_godzinypracyucz[$i][0];
+                  $tmp1=$nieposortowane_godzinypracyucz[$i][1];
+                  $nieposortowane_godzinypracyucz[$i][0]=$nieposortowane_godzinypracyucz[$min][0];
+                  $nieposortowane_godzinypracyucz[$i][1]=$nieposortowane_godzinypracyucz[$min][1];
+                  $nieposortowane_godzinypracyucz[$min][0]=$tmp;
+                  $nieposortowane_godzinypracyucz[$min][1]=$tmp1;
+              }
 
               //tablica pamieta ile godzin zostalo dancych dni
               $myArray =[];
 
               //przechowuje wyniki
               $rozwiazania= array();
-              //rozdzielam kazdy dzien na godziny
-              foreach ($godziny_pracy_uczelni as $gpu)
+              //rozdzielam kazdy dzien na godziny  dysponujac posortowanymi_godzinami
+              foreach ($nieposortowane_godzinypracyucz as $gpu)
               {
                   //zapamietuje dzien tygodnia
-                  $dzien=$gpu->getDzien();
+                  $dzien=$gpu[1];
                   //pobiera ilosc godzin danego dnia -> mozna modyfikowac
-                  $godz1dnia=$gpu->getGodziny();
+                  $godz1dnia=$gpu[0];
                   //pobieram 1 z zajec
-                  foreach ($zajecia as $zaj)
+                  foreach ($nieposortowane_zajecia as $zaj)
                   {
                       //if($godz1dnia>=$zaj->getOkres() && ($godz1dnia-$zaj->getOkres())>=0   )
                       //jesli godziny z dnia uczelni maja miejsce na zajecia .
-                      if($godz1dnia>=$zaj->getOkres() )
+                      if($godz1dnia>=$zaj[0] )
                       {
                           //sprawdzam czy w tablicy rozwizan juz nie ma tego zajecia
                           foreach($rozwiazania as $rozwiazanie){
-                              if ($rozwiazanie[1]==$zaj->getNazwa())
+                              if ($rozwiazanie[1]==$zaj[1])
                               {
                                   goto a;
                               }
                             }
                           //miesci sie i chce zapamietac to aby potem wyslac do bazy wynik
-                          $rozwiazania[]=array($dzien,$zaj->getNazwa());
-                          $godz1dnia=$godz1dnia-$zaj->getOkres();
+                          $rozwiazania[]=array($dzien,$zaj[1]);
+                          $godz1dnia=$godz1dnia-$zaj[0];
                       }else{
                           //zmienna pamieta ile godzin zostalo ostatniego dnia i przechodze do innego zajecia
                           $myArray[  ] = $godz1dnia;
@@ -150,10 +211,7 @@ public $flaga1=1;
             $ilosc_niezapisanych=$zapisane1-$rozwiazania1;
         }
 
-
-
-
-
+        //wyrenderowanie szablonu widoku
         return $this->render('ktory_alg_zastosowac/index.html.twig', [
             'algForm' => $form->createView(),
             'wynikiAlgorytmuUczelnie' => $wynikiAlgorytmuUczelnie,
