@@ -8,3 +8,12 @@ hello_page:
 dodanie_do_bazy:
   path: /article/admin
   controller: App\Controller\ArticleAdminContorller::index
+
+usuniecia_artykulu:
+  path: /article/delete/{id}
+  controller: App\Controller\ArticleAdminContorller::delete
+
+usuniecia_godz_ucz:
+  path: /article/delete/dni/uczelni/{id}
+  controller: App\Controller\ArticleAdminContorller::delete_uczelnie
+

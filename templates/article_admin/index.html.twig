@@ -6,17 +6,43 @@
 
 {% block body %}
     <li><a href="{{path('hello_page') }} ">back</a></li>
-    <h1>Launch a new Article! ?</h1>
-    {{ form_start(articleForm) }}
-    {{ form_widget(articleForm) }}
-    <button type="submit" class="btn btn-primary">Create!</button>
-    {{ form_end(articleForm) }}
+{#    <h1>Launch a new Article! ?</h1>#}
+{#    {{ form_start(articleForm) }}#}
+{#    {{ form_widget(articleForm) }}#}
+{#    <button type="submit" class="btn btn-primary">Create!</button>#}
+{#    {{ form_end(articleForm) }}#}
     <h1>------------------------------------------------</h1>
+    <h1>Zajecia! </h1>
+    {% for zaj in allZajecia %}
+
+        {% dump(zaj) %}
+         <li>Id {{ zaj.id }} Nazwa zajec: {{ zaj.nazwa }} Czas trwania {{ zaj.okres }} h <a href="{{ url('usuniecia_artykulu', { 'id': zaj.id }) }}">Usun</a></li>
+
+
+
+    {% endfor %}
     <h1>Launch a new Zajecia! ?</h1>
     {{ form_start(zajeciaForm) }}
     {{ form_widget(zajeciaForm) }}
     <button type="submit" class="btn btn-primary">Create!</button>
     {{ form_end(zajeciaForm) }}
+
+
+    <h1>------------------------------------------------</h1>
+    <h1>Godziny pracy uczelni! </h1>
+    {% for godz in allDniUczelni %}
+
+        {% dump(godz) %}
+        <li>Id {{ godz.id }} Dzien {{ godz.dzien }} Godziny {{ godz.godziny }}  <a href="{{ url('usuniecia_godz_ucz', { 'id': godz.id }) }}">Usun</a></li>
+
+
+
+    {% endfor %}
+    <h1>Launch a new Godziny Pracy Uczelni </h1>
+    {{ form_start(gpuForm) }}
+    {{ form_widget(gpuForm) }}
+    <button type="submit" class="btn btn-primary">Create!</button>
+    {{ form_end(gpuForm) }}
 
 
 

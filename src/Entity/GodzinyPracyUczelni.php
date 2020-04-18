@@ -36,7 +36,9 @@ class GodzinyPracyUczelni
         return $this->dzien;
     }
 
-    public function setDzien(?int $dzien): self
+
+
+    public function setDzien($dzien)
     {
         $this->dzien = $dzien;
 
@@ -48,10 +50,11 @@ class GodzinyPracyUczelni
         return $this->godziny;
     }
 
-    public function setGodziny(?int $godziny): self
+    public function setGodziny($godziny)
     {
         $this->godziny = $godziny;
 
         return $this;
     }
+
 }
