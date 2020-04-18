@@ -13,10 +13,10 @@ class KtoryAlgZastosowacType extends AbstractType
     {
         $builder
 //            ->add('nazwa_algorytmu')
-            ->add('Which_algorythm_should_i_use', ChoiceType::class, [
+            ->add('Do_you_want_to_use_algorithm', ChoiceType::class, [
                 'choices'  => [
-                'Maybe' => null,
-                'GodzinyUczelni' => true,
+
+                'Yes' => true,
                 'No' => false,
                 ],
                 ]);

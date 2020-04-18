@@ -15,7 +15,7 @@
     <h1>Zajecia! </h1>
     {% for zaj in allZajecia %}
 
-        {% dump(zaj) %}
+
          <li>Id {{ zaj.id }} Nazwa zajec: {{ zaj.nazwa }} Czas trwania {{ zaj.okres }} h <a href="{{ url('usuniecia_artykulu', { 'id': zaj.id }) }}">Usun</a></li>
 
 
@@ -32,7 +32,7 @@
     <h1>Godziny pracy uczelni! </h1>
     {% for godz in allDniUczelni %}
 
-        {% dump(godz) %}
+
         <li>Id {{ godz.id }} Dzien {{ godz.dzien }} Godziny {{ godz.godziny }}  <a href="{{ url('usuniecia_godz_ucz', { 'id': godz.id }) }}">Usun</a></li>
 
 
@@ -45,7 +45,17 @@
     {{ form_end(gpuForm) }}
 
 
-
+    <h1>------------------------------------------------</h1>
+    <h1>Nauczyciele </h1>
+    {% dump(allTeachers) %}
+    {% for teach in allTeachers %}
+        <li>Id {{ teach.id }}Name {{ teach.name }} Surname {{ teach.surname}} Subject {{ teach.subject }} Dni wolne od pracy: {{ teach.day1 }},{{ teach.day3 }},{{ teach.day2 }}<a href="{{ url('usuniecia_teachers', { 'id': teach.id }) }}">Usun</a></li>
+    {% endfor %}
+    <h1>Dodaj nauczyciela </h1>
+    {{ form_start(teachersForm) }}
+    {{ form_widget(teachersForm) }}
+    <button type="submit" class="btn btn-primary">Create!</button>
+    {{ form_end(teachersForm) }}
 
 
 {% endblock %}

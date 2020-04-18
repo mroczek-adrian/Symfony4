@@ -17,3 +17,6 @@ usuniecia_godz_ucz:
   path: /article/delete/dni/uczelni/{id}
   controller: App\Controller\ArticleAdminContorller::delete_uczelnie
 
+usuniecia_teachers:
+  path: /article/delete/teachers/{id}
+  controller: App\Controller\ArticleAdminContorller::delete_teachers

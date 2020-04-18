@@ -4,11 +4,13 @@ namespace App\Controller;
 
 //2 klasy do algorytmu z ktorych bede pobieral dane
 use App\Entity\GodzinyPracyUczelni;
+use App\Entity\Teachers;
 use App\Entity\Zajecia;
 ////////////////////
 use App\Entity\WynikAlgUczelnie;
 use App\Entity\KtoryAlgZastosowac;
 use App\Form\KtoryAlgZastosowacType;
+use Doctrine\Common\Collections\ArrayCollection;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,7 +52,7 @@ class KtoryAlgZastosowacController extends AbstractController
             $data = $form->getData();
 
             //jesli prawda jest ze chce uzyc algorytmu uczelni
-          if($data['Which_algorythm_should_i_use'])
+          if($data['Do_you_want_to_use_algorithm'])
           {
               //akcja
 
@@ -62,6 +64,8 @@ class KtoryAlgZastosowacController extends AbstractController
               //usuwam
               $em->flush();
 
+              //pobranie danych nauczycieli
+              $nauczyciele= $this->getDoctrine()->getRepository(Teachers::class)->findAll();
 
               //SORTOWANIE
               //po pobraniu chce postortowac rosnaco zajecia i godziny uczelni aby wzrosla efektywnosc alg
@@ -77,7 +81,7 @@ class KtoryAlgZastosowacController extends AbstractController
                   $n=$n+1;
               }
 
-              //tworze tablice z danymi nieposortowanymi
+              //tworze tablice z danymi nieposortowanymi ktore potem beda posortowane
               foreach ($zajecia as $zaj){
                   $nieposortowane_zajecia[]=array($zaj->getOkres(),$zaj->getNazwa());
               }
@@ -128,11 +132,12 @@ class KtoryAlgZastosowacController extends AbstractController
                   $nieposortowane_godzinypracyucz[$min][1]=$tmp1;
               }
 
+              //ZACZYNAMY GLOWNE PRZYPISANIA DO WYNIKOW
               //tablica pamieta ile godzin zostalo dancych dni
               $myArray =[];
-
               //przechowuje wyniki
               $rozwiazania= array();
+
               //rozdzielam kazdy dzien na godziny  dysponujac posortowanymi_godzinami
               foreach ($nieposortowane_godzinypracyucz as $gpu)
               {
@@ -145,6 +150,18 @@ class KtoryAlgZastosowacController extends AbstractController
                   {
                       //if($godz1dnia>=$zaj->getOkres() && ($godz1dnia-$zaj->getOkres())>=0   )
                       //jesli godziny z dnia uczelni maja miejsce na zajecia .
+
+                      //szukam nauczyciela ktory jest przypisany do zajec
+
+                      foreach ($nauczyciele as $naucz)
+                      {
+                          //szukam mojego nauczyciela, oraz czy ma wtedy wolne , jesli tak to idzie do dodanie tego zajecia w ten dzien
+                          if($naucz->getSubject() == $zaj[1] && ($gpu[1] == $naucz->getDay1() || $gpu[1] == $naucz->getDay2() || $gpu[1] == $naucz->getDay3()))
+                          {
+                              goto a;
+                          }
+                      }
+
                       if($godz1dnia>=$zaj[0] )
                       {
                           //sprawdzam czy w tablicy rozwizan juz nie ma tego zajecia

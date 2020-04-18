@@ -3,10 +3,12 @@
 namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\GodzinyPracyUczelni;
+use App\Entity\Teachers;
 use App\Entity\Zajecia;
 use App\Form\ArticleFormType;
 use App\Form\GodzinyPracyUczelniFormType;
 use App\Entity\WynikAlgUczelnie;
+use App\Form\TeachersFormType;
 use App\Form\ZajeciaFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -80,15 +82,11 @@ class ArticleAdminController extends AbstractController
         ///
 
            $form1 = $this->createForm(ZajeciaFormType::class);
-
            $form1 -> handleRequest($request);
-
            if($form1->isSubmitted() && $form1->isValid()) {
                //  dd($form ->getData());
                $data = $form1->getData();
                $zajecia = new Zajecia();
-
-
 //           $data = $form->getData();
 //           $article = $form->getData();
                $zajecia->setNazwa($data['nazwa']);
@@ -98,18 +96,58 @@ class ArticleAdminController extends AbstractController
 
                 //wyslanie
                $em->flush();
-
                return $this->redirectToRoute('dodanie_do_bazy');
            }
+
+
+
+//start form3
+
+        $form3 = $this->createForm(TeachersFormType::class);
+        $form3 -> handleRequest($request);
+        if($form3->isSubmitted() && $form3->isValid()) {
+            //  dd($form ->getData());
+            $data = $form3->getData();
+            $teacher = new Teachers();
+
+
+//           $data = $form->getData();
+//           $article = $form->getData();
+
+            $teacher->setName($data['name']);
+            $teacher->setSurname($data['surname']);
+            $teacher->setSubject($data['subject']);
+            $teacher->setDay1($data['day1']);
+            $teacher->setDay2($data['day2']);
+            $teacher->setDay3($data['day3']);
+
+            $em->persist($teacher);
+            //wyslanie
+            $em->flush();
+
+            return $this->redirectToRoute('dodanie_do_bazy');
+        }
+
+        //koniec forma 1
+        /////////////
+        ///inny form
+
+
+
+
+
         //pobieram dane
         $allZajecia= $this->getDoctrine()->getRepository(Zajecia::class)->findAll();
         $allDniUczelni= $this->getDoctrine()->getRepository(GodzinyPracyUczelni::class)->findAll();
+        $allTeachers= $this->getDoctrine()->getRepository(Teachers::class)->findAll();
         return $this->render('article_admin/index.html.twig', [
             'articleForm' => $form->createView(),
             'zajeciaForm' => $form1->createView(),
             'gpuForm' => $form2->createView(),
+            'teachersForm' =>$form3->createView(),
             'allZajecia' => $allZajecia,
             'allDniUczelni' =>$allDniUczelni,
+            'allTeachers' => $allTeachers,
         ]);
     }
 
@@ -140,6 +178,25 @@ class ArticleAdminController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(GodzinyPracyUczelni::class)->find($id);
+        //  $post = $em->getRepository('Zajecia')->find($id);
+
+        if (!$post) {
+            return $this->redirectToRoute('article_admin');
+        }
+
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('article_admin');
+    }
+
+    /**
+     * @Route("/article/delete/teachers/{id}", name="delete_teachers")
+     */
+    public function delete_teachersAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository(Teachers::class)->find($id);
         //  $post = $em->getRepository('Zajecia')->find($id);
 
         if (!$post) {
