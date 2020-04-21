@@ -5,32 +5,53 @@
 
 
 {% block body %}
-    <li><a href="{{path('hello_page') }} ">back</a></li>
-    <h1>Run a new algorythm</h1>
-    {{ form_start(algForm) }}
-    {{ form_widget(algForm) }}
-    <button type="submit" class="btn btn-primary">Run!</button>
+
+
+
+
+    <div class="form-group row">
+        <div class="col-sm-1">
+
+        </div>
+        <div class="col-sm-1">
+            <li><a href="{{path('hello_page') }} ">back</a></li>
+        </div>
+        <div class="col-sm-8">
+
+            {{ form_start(algForm) }}
+            {{ form_widget(algForm) }}
+            <button type="submit" class="btn btn-primary">Run!</button>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
     {{ form_end(algForm) }}
 
 
+    <div class="form-group row">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col-sm-8">
+            <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Wynik:" }}</h1>
+            {% for wyn in wynikiAlgorytmuUczelnie %}
+
+                {% dump(wyn) %}
+                <h5> Dzien tygodnia:{{ wyn.numer_dnia }} Nazwa zajec: {{ wyn.nazwa_zajec }}</h5>
+            {% endfor %}
+            {% dump(FLAGA) %}
+
+            {% if FLAGA %}
+                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia negatywna -nie umieszczono   "}}{{ wynikiAlgorytmuUczelnie is not null ? ilosc_niezapisanych }}{{ wynikiAlgorytmuUczelnie is not null ?"   przedmiotow" }} </h4>
+            {% else %}
+                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia pomyslna-wszystkie przedmoity umieszczone w grafiku"  }}</h4>
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>
 
 
-    <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Wynik:" }}</h1>
-
-
-
-
-    {% for wyn in wynikiAlgorytmuUczelnie %}
-
-        {% dump(wyn) %}
-        <h5> Dzien tygodnia:{{ wyn.numer_dnia }} Nazwa zajec: {{ wyn.nazwa_zajec }}</h5>
-    {% endfor %}
-    {% dump(FLAGA) %}
-
-    {% if FLAGA %}
-        <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia negatywna -nie umieszczono   "}}{{ wynikiAlgorytmuUczelnie is not null ? ilosc_niezapisanych }}{{ wynikiAlgorytmuUczelnie is not null ?"   przedmiotow" }} </h4>
-    {% else %}
-        <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia pomyslna-wszystkie przedmoity umieszczone w grafiku"  }}</h4>
-    {% endif %}
 
 {% endblock %}

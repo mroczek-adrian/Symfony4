@@ -1,0 +1,26 @@
+/*Contact class*/
+.main {
+    margin-top:20px;
+}
+/*Main page*/
+p.text-muted{
+
+    font-size:13px;
+}
+
+.prifile-image{
+
+
+}
+.name-dev{
+    font-size:18px;
+}
+.div-prifile-image{
+    float: left;
+}
+.div-dev-info{
+    float: left;
+	text-align:center;
+	margin-left:5px;
+	margin-top:10px;
+}
