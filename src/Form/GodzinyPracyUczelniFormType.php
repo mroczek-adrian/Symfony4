@@ -12,8 +12,8 @@ class GodzinyPracyUczelniFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dzien')
-            ->add('godziny')
+            ->add('day_')
+            ->add('hour')
         ;
     }
 

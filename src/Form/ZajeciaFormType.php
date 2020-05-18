@@ -12,8 +12,8 @@ class ZajeciaFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nazwa')
-            ->add('okres')
+            ->add('name_')
+            ->add('time_')
         ;
     }
 

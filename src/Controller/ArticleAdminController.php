@@ -65,8 +65,9 @@ class ArticleAdminController extends AbstractController
 
 //           $data = $form->getData();
 //           $article = $form->getData();
-            $gpu->setDzien($data['dzien']);
-            $gpu->setGodziny($data['godziny']);
+           // $gpu->setDzien($data['dzien']);
+            $gpu->setDzien($data['day_']);
+            $gpu->setGodziny($data['hour']);
              $em->persist($gpu);
             //wyslanie
             $em->flush();
@@ -89,8 +90,8 @@ class ArticleAdminController extends AbstractController
                $zajecia = new Zajecia();
 //           $data = $form->getData();
 //           $article = $form->getData();
-               $zajecia->setNazwa($data['nazwa']);
-               $zajecia->setOkres($data['okres']);
+               $zajecia->setNazwa($data['name_']);
+               $zajecia->setOkres($data['time_']);
 
                $em->persist($zajecia);
 

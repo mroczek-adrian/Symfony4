@@ -33,18 +33,18 @@
 
         </div>
         <div class="col-sm-8">
-            <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Wynik:" }}</h1>
+            <h1>{{ wynikiAlgorytmuUczelnie is not null ?  "Results:" }}</h1>
             {% for wyn in wynikiAlgorytmuUczelnie %}
 
                 {% dump(wyn) %}
-                <h5> Dzien tygodnia:{{ wyn.numer_dnia }} Nazwa zajec: {{ wyn.nazwa_zajec }}</h5>
+                <h5> Day :{{ wyn.numer_dnia }} Subject {{ wyn.nazwa_zajec }}</h5>
             {% endfor %}
             {% dump(FLAGA) %}
 
             {% if FLAGA %}
-                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia negatywna -nie umieszczono   "}}{{ wynikiAlgorytmuUczelnie is not null ? ilosc_niezapisanych }}{{ wynikiAlgorytmuUczelnie is not null ?"   przedmiotow" }} </h4>
+                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Verification negative - there in no place for   "}}{{ wynikiAlgorytmuUczelnie is not null ? ilosc_niezapisanych }}{{ wynikiAlgorytmuUczelnie is not null ?"   subject" }} </h4>
             {% else %}
-                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Weryfikacjia pomyslna-wszystkie przedmoity umieszczone w grafiku"  }}</h4>
+                <h4>{{ wynikiAlgorytmuUczelnie is not null ?  "Verification positive - all subject are placed into a sheadule"  }}</h4>
             {% endif %}
         </div>
         <div class="col-sm-2">

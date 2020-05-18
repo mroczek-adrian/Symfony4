@@ -16,16 +16,16 @@
         <div class="col-sm-8">
 
 
-            <h1>Zajecia! </h1><br>
+            <h1>Lessons! </h1><br>
             {% for zaj in allZajecia %}
 
 
-                <li>Id {{ zaj.id }} Nazwa zajec: {{ zaj.nazwa }} Czas trwania {{ zaj.okres }} h <a href="{{ url('usuniecia_artykulu', { 'id': zaj.id }) }}">Usun</a></li>
+                <li> Name of lesson: {{ zaj.nazwa }} Time {{ zaj.okres }} h <a href="{{ url('usuniecia_artykulu', { 'id': zaj.id }) }}">Delete</a></li>
 
 
 
             {% endfor %}
-            <br><h1>Launch a new Zajecia! </h1>
+            <br><h1>Launch a new Lesson! </h1>
             {{ form_start(zajeciaForm) }}
             {{ form_widget(zajeciaForm) }}
             <button type="submit" class="btn btn-primary">Create!</button>
@@ -52,16 +52,16 @@
 
         </div>
         <div class="col-sm-8">
-            <h1>Godziny pracy uczelni! </h1><br>
+            <h1>Time when university is open</h1><br>
             {% for godz in allDniUczelni %}
 
 
-                <li>Id {{ godz.id }} Dzien {{ godz.dzien }} Godziny {{ godz.godziny }}  <a href="{{ url('usuniecia_godz_ucz', { 'id': godz.id }) }}">Usun</a></li>
+                <li> Day {{ godz.dzien }} Hours {{ godz.godziny }}  <a href="{{ url('usuniecia_godz_ucz', { 'id': godz.id }) }}">Delete</a></li>
 
 
 
             {% endfor %}
-            <br> <h1>Launch a new Godziny Pracy Uczelni </h1>
+            <br> <h1>Add a new time when university is open </h1>
             {{ form_start(gpuForm) }}
             {{ form_widget(gpuForm) }}
             <button type="submit" class="btn btn-primary">Create!</button>
@@ -85,12 +85,12 @@
 
         </div>
         <div class="col-sm-8">
-            <h1>Nauczyciele </h1><br>
+            <h1>Teachers </h1><br>
             {% dump(allTeachers) %}
             {% for teach in allTeachers %}
-                <li>Id {{ teach.id }}Name {{ teach.name }} Surname {{ teach.surname}} Subject {{ teach.subject }} Dni wolne od pracy: {{ teach.day1 }},{{ teach.day3 }},{{ teach.day2 }}<a href="{{ url('usuniecia_teachers', { 'id': teach.id }) }}">Usun</a></li>
+                <li>Name {{ teach.name }} Surname {{ teach.surname}} Subject {{ teach.subject }} Day free from work: {{ teach.day1 }},{{ teach.day3 }},{{ teach.day2 }}<a href="{{ url('usuniecia_teachers', { 'id': teach.id }) }}">Delete</a></li>
             {% endfor %}
-            <br> <h1>Dodaj nauczyciela </h1>
+            <br> <h1>Add teacher </h1>
             {{ form_start(teachersForm) }}
             {{ form_widget(teachersForm) }}
             <button type="submit" class="btn btn-primary">Create!</button>
